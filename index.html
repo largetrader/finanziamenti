@@ -2,595 +2,1187 @@
 <html lang="it">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="robots" content="noindex, nofollow, noarchive">
-  <title>Large Trader | Calcolatore rate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>LargeTrader | Calcolatore Rate</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,600;0,700;0,800;1,600;1,700;1,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,600;0,700;0,800;1,600;1,700;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* Grafica ripresa dalla landing "Masterclass gratuita LargeTrader" */
-    :root{
-      --blue:#3E86C4; --blue-2:#2D6299; --blue-deep:#1B2738; --blue-bright:#7FB2E0;
-      --ink:#20242A; --ink-2:#5A6573; --line:#E6EDF4;
-      --green:#1FA86F; --green-bright:#3FB58A; --coral:#E2655C;
-      --bg:#fff; --bg-soft:#EEF3F8;
-      --font:'Inter',system-ui,sans-serif;
-      --font-h:'Saira',var(--font);
-      --hero:radial-gradient(120% 95% at 80% -12%,#2D6299 0%,#1B2330 46%,#0E141C 100%);
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:var(--font);color:var(--ink);background:var(--bg-soft);line-height:1.6;-webkit-font-smoothing:antialiased}
-    button,input{font:inherit}
-    button{cursor:pointer}
-    .dots:before{
-      content:"";position:absolute;inset:0;pointer-events:none;
-      background-image:radial-gradient(rgba(127,178,224,.12) 1px,transparent 1px);background-size:24px 24px;
-      mask-image:radial-gradient(85% 75% at 65% 25%,#000,transparent 78%);
-      -webkit-mask-image:radial-gradient(85% 75% at 65% 25%,#000,transparent 78%);
+    :root {
+      --blue: #3E86C4;
+      --blue-2: #2D6299;
+      --blue-3: #7FB2E0;
+      --navy: #141922;
+      --navy-2: #0C131C;
+      --ink: #20242A;
+      --muted: #5A6573;
+      --line: #E6EDF4;
+      --soft: #EEF3F8;
+      --green: #3FB58A;
+      --danger: #E2655C;
+      --white: #fff;
+      --shadow: 0 22px 44px -26px rgba(45, 98, 153, .55);
+      --heavy: 0 50px 80px -34px rgba(0, 0, 0, .72);
+      --font: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --head: "Saira", var(--font);
     }
 
-    /* ---------- Ingresso ---------- */
-    #gate{position:fixed;inset:0;z-index:80;background:var(--hero);display:flex;align-items:center;justify-content:center;padding:24px;overflow:hidden}
-    #gate .box{position:relative;z-index:1;width:100%;max-width:380px;background:#fff;border-radius:20px;padding:34px 30px;text-align:center;box-shadow:0 40px 70px -30px rgba(0,0,0,.6)}
-    #gate img{height:30px;width:auto;margin:0 auto 22px;display:block}
-    #gate h1{font-family:var(--font-h);font-style:italic;font-weight:800;font-size:25px;line-height:1.1;margin-bottom:22px}
-    #gate input{text-align:center;margin-bottom:12px}
-    #gate .err{color:var(--coral);font-size:13.5px;min-height:20px;margin-top:12px}
-
-    /* ---------- Barra ---------- */
-    header.nav{position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 16px -8px rgba(20,25,34,.12)}
-    .nav-in{display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:1280px;margin:0 auto;padding:13px clamp(16px,4vw,34px)}
-    .nav-left{display:flex;align-items:center;gap:15px;min-width:0}
-    .nav-in img{height:clamp(23px,4vw,29px);width:auto;display:block}
-    .nav-sep{width:1px;height:28px;background:var(--line);flex:none}
-    .nav-title{font-family:var(--font-h);font-style:italic;font-weight:700;font-size:clamp(15px,2.4vw,20px);line-height:1.15}
-    .link{background:none;border:none;color:var(--ink-2);font-size:12px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;transition:color .15s}
-    .link:hover{color:var(--blue-2)}
-
-    /* ---------- Impianto ---------- */
-    .shell{max-width:1280px;margin:0 auto;padding:clamp(16px,2.6vw,26px) clamp(16px,4vw,34px) 56px}
-    .badge{
-      display:inline-flex;align-items:center;gap:8px;background:#FDF0EF;border:1px solid #F3C9C5;color:#A93F35;
-      font-family:var(--font-h);font-style:italic;font-weight:700;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;
-      padding:8px 15px;border-radius:100px;margin-bottom:16px;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    .workspace{display:grid;grid-template-columns:minmax(320px,400px) minmax(0,1fr);gap:18px;align-items:start}
-    @media(max-width:960px){.workspace{grid-template-columns:1fr}}
-    .panel{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
-    .controls{padding:24px}
 
-    .sec-tag{font-family:var(--font-h);font-style:italic;font-weight:700;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:16px}
-
-    /* ---------- Campi ---------- */
-    label{display:block;color:var(--ink-2);font-size:13px;font-weight:500;margin-bottom:7px}
-    input[type=number],input[type=password]{
-      width:100%;min-height:50px;border:1px solid #CCD8E5;border-radius:12px;background:#fff;color:var(--ink);
-      padding:11px 14px;outline:none;font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;
-      transition:border-color .15s,box-shadow .15s;-moz-appearance:textfield;
+    body {
+      min-height: 100vh;
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--soft);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
-    input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(62,134,196,.16)}
-    input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-    .field{margin-bottom:16px}
-    .field:last-child{margin-bottom:0}
-    .row{display:grid;grid-template-columns:2fr 1fr;gap:11px}
 
-    .resto{
-      display:flex;justify-content:space-between;align-items:center;gap:12px;
-      background:var(--bg-soft);border:1px solid #DCE8F4;border-radius:12px;
-      padding:14px 16px;margin:4px 0 18px;
+    button,
+    input,
+    select {
+      font: inherit;
     }
-    .resto span{font-size:13px;font-weight:500;color:var(--ink-2)}
-    .resto strong{font-family:var(--font-h);font-style:italic;font-weight:800;font-size:24px;line-height:1;color:var(--blue);font-variant-numeric:tabular-nums}
 
-    /* ---------- Risultato ---------- */
-    .deal{position:relative;overflow:hidden;color:#fff;background:var(--hero);padding:clamp(26px,3.4vw,36px)}
-    .pill{
-      position:relative;display:inline-flex;align-items:center;gap:9px;
-      font-family:var(--font-h);font-style:italic;font-weight:700;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;
-      color:#9FC6E8;border:1px solid rgba(127,178,224,.4);padding:7px 14px;border-radius:100px;
+    button {
+      cursor: pointer;
     }
-    .rata{
-      position:relative;font-family:var(--font-h);font-style:italic;font-weight:800;
-      font-size:clamp(52px,7.6vw,86px);line-height:1;letter-spacing:-1px;margin:20px 0 6px;font-variant-numeric:tabular-nums;
-      background:linear-gradient(92deg,#BFE0FF,#5AA3DD 60%,#3E86C4);
-      -webkit-background-clip:text;background-clip:text;color:transparent;
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
     }
-    .rata-sub{position:relative;font-size:15.5px;color:#B9C7D6}
 
-    .body{padding:clamp(20px,2.6vw,28px);background:#fff}
-    .line{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:12px 0;font-size:15px;border-bottom:1px solid var(--line)}
-    .line .l{color:var(--ink-2)}
-    .line .r{font-weight:600;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
-    .line .r small{color:var(--ink-2);font-weight:400}
-    .line.tot{border-bottom:0;padding-top:16px}
-    .line.tot .l{color:var(--ink);font-weight:600}
-    .line.tot .r{font-family:var(--font-h);font-style:italic;font-weight:800;font-size:27px;color:var(--blue);line-height:1}
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(255, 255, 255, .94);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 2px 16px -8px rgba(20, 25, 34, .12);
+      backdrop-filter: blur(10px);
+    }
 
-    .check{display:flex;align-items:flex-start;gap:8px;margin-top:16px;font-size:13.5px;color:var(--green);font-weight:500}
-    .check.bad{color:#A93F35}
-    .errbox{background:#FDF0EF;border:1px solid #F3C9C5;color:#A93F35;padding:15px 17px;border-radius:12px;font-size:14.5px}
-    .errbox ul{margin:0;padding-left:18px}
-    .errbox li+li{margin-top:6px}
+    .nav-inner {
+      width: min(1280px, calc(100% - 36px));
+      margin: 0 auto;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
 
-    /* Riservato: nessun pulsante a schermo, si apre col tasto "i" */
-    .interno{margin-top:20px;padding:16px 18px;border-radius:12px;background:#FFF9EE;border:1px dashed #E5C489}
-    .interno[hidden]{display:none}
-    .interno .tag{font-family:var(--font-h);font-style:italic;font-weight:700;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:#9A6B12;display:block;margin-bottom:6px}
-    .interno .line{border-bottom-color:#F0E2C6;font-size:14px}
-    .interno .line:last-child{border-bottom:0}
+    .wordmark {
+      font-family: var(--head);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 25px;
+      letter-spacing: -.2px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
 
-    /* ---------- Impostazioni ---------- */
-    #admin{position:fixed;inset:0;z-index:70;background:rgba(20,25,34,.66);display:flex;align-items:flex-start;justify-content:center;padding:34px 18px;overflow:auto}
-    #admin[hidden]{display:none}
-    #admin .panel{max-width:620px;width:100%;padding:28px}
-    #admin h2{font-family:var(--font-h);font-style:italic;font-weight:700;font-size:20px;margin-bottom:18px}
-    table{width:100%;border-collapse:collapse;margin-bottom:14px}
-    th{font-family:var(--font-h);font-style:italic;font-weight:700;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--blue);text-align:left;padding-bottom:9px}
-    td{padding:4px 7px 4px 0}
-    td input{min-height:44px;font-size:16px}
-    td:last-child{width:44px;padding-right:0}
-    .btn{background:var(--blue);color:#fff;border:none;border-radius:13px;font-weight:700;padding:13px 24px;box-shadow:0 18px 34px -14px rgba(62,134,196,.85);transition:transform .18s,background .18s}
-    .btn:hover{transform:translateY(-2px);background:#357ab6}
-    .btn-ghost{background:#fff;color:var(--blue-2);border:1px solid #CCD8E5;box-shadow:none}
-    .btn-ghost:hover{background:var(--bg-soft);transform:none}
-    .btn-sm{padding:9px 16px;font-size:13.5px;border-radius:10px;box-shadow:none}
-    .del{background:#fff;border:1px solid #CCD8E5;color:var(--ink-2);border-radius:10px;padding:10px 12px;font-size:13px;line-height:1;box-shadow:none}
-    .del:hover{background:#FDF0EF;border-color:#F3C9C5;color:#A93F35}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
-    .spacer{flex:1}
-    .nota{font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-top:14px}
+    .wordmark span {
+      color: var(--blue);
+    }
 
-    @media(max-width:680px){.row{grid-template-columns:1fr}}
-    @media print{
-      header.nav{position:static;box-shadow:none}
-      .controls,.badge,.interno,.link{display:none}
-      .shell{padding:0;max-width:none}
-      .workspace{display:block}
-      .panel{border:0;border-radius:0}
-      .deal{background:#fff;color:var(--ink);border-bottom:2px solid var(--blue)}
-      .deal:before{display:none}
-      .pill{color:var(--blue-2);border-color:var(--line)}
-      .rata{-webkit-text-fill-color:var(--blue);color:var(--blue)}
-      .rata-sub{color:var(--ink-2)}
+    .toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      user-select: none;
+    }
+
+    .toggle input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .toggle b {
+      position: relative;
+      width: 54px;
+      height: 30px;
+      border-radius: 999px;
+      background: #CCD8E5;
+      transition: background .18s;
+    }
+
+    .toggle b:after {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      left: 4px;
+      top: 4px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 5px 14px rgba(20, 25, 34, .2);
+      transition: transform .18s;
+    }
+
+    .toggle input:checked + b {
+      background: var(--blue);
+    }
+
+    .toggle input:checked + b:after {
+      transform: translateX(24px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(120% 95% at 80% -12%, #2D6299 0%, #1B2330 46%, #0E141C 100%);
+      color: #fff;
+    }
+
+    .hero:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(127, 178, 224, .10) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: radial-gradient(80% 70% at 60% 30%, #000, transparent 75%);
+      -webkit-mask-image: radial-gradient(80% 70% at 60% 30%, #000, transparent 75%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      width: min(1280px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: clamp(34px, 5vw, 64px) 0;
+      display: grid;
+      grid-template-columns: minmax(320px, .9fr) minmax(0, 1.1fr);
+      gap: clamp(22px, 4vw, 48px);
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-family: var(--head);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: #9FC6E8;
+      border: 1px solid rgba(127, 178, 224, .4);
+      padding: 7px 14px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+
+    .live {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(63, 181, 138, .22);
+    }
+
+    h1 {
+      font-family: var(--head);
+      font-style: italic;
+      font-weight: 800;
+      font-size: clamp(32px, 5.4vw, 62px);
+      line-height: 1.04;
+      letter-spacing: -.4px;
+      max-width: 700px;
+    }
+
+    h1 span,
+    .amount-gradient {
+      background: linear-gradient(92deg, #BFE0FF, #5AA3DD 60%, #3E86C4);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      color: #B9C7D6;
+      max-width: 560px;
+      font-size: clamp(15px, 1.6vw, 18px);
+      margin-top: 18px;
+    }
+
+    .browser {
+      background: var(--navy-2);
+      border: 1px solid rgba(255, 255, 255, .10);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--heavy);
+    }
+
+    .browser-bar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 11px 14px;
+      background: #0A1017;
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot:nth-child(1) { background: #E2655C; }
+    .dot:nth-child(2) { background: #E8B14C; }
+    .dot:nth-child(3) { background: #3FB58A; }
+
+    .url {
+      margin-left: 10px;
+      color: #8A98A8;
+      background: #121A23;
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: 7px;
+      padding: 4px 14px;
+      font-size: 12px;
+      flex: 1;
+    }
+
+    .screen {
+      padding: clamp(16px, 2vw, 24px);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .big-metric {
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .10);
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 108px;
+    }
+
+    .big-metric span {
+      display: block;
+      color: #8FA1B3;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .big-metric strong {
+      font-family: var(--head);
+      font-style: italic;
+      font-size: clamp(24px, 3vw, 36px);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .content {
+      width: min(1280px, calc(100% - 36px));
+      margin: 22px auto 44px;
+      display: grid;
+      grid-template-columns: minmax(330px, 430px) minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .controls {
+      padding: 22px;
+    }
+
+    .section + .section {
+      margin-top: 22px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 13px;
+    }
+
+    .section-head h2 {
+      font-family: var(--head);
+      font-style: italic;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    .section-head small {
+      color: #8A95A3;
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .product {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      min-height: 78px;
+      padding: 13px;
+      text-align: left;
+      color: var(--ink);
+      transition: transform .18s, box-shadow .18s, border-color .18s, background .18s;
+    }
+
+    .product:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 34px -24px rgba(45, 98, 153, .55);
+      border-color: #C9DCEE;
+    }
+
+    .product.active {
+      background: #EAF2FA;
+      border-color: var(--blue);
+      box-shadow: inset 0 0 0 1px rgba(62, 134, 196, .28);
+    }
+
+    .product b {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .product span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .grid-2,
+    .grid-3 {
+      display: grid;
+      gap: 10px;
+    }
+
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    label {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    label em {
+      color: #8A95A3;
+      font-style: normal;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 47px;
+      border: 1px solid #CCD8E5;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--ink);
+      padding: 11px 13px;
+      outline: none;
+      font-variant-numeric: tabular-nums;
+      transition: border-color .15s, box-shadow .15s;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(62, 134, 196, .16);
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .field + .field,
+    .field + .chips,
+    .grid-2 + .field,
+    .grid-2 + .chips,
+    .grid-3 + .chips {
+      margin-top: 12px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      background: #fff;
+      color: var(--ink);
+      min-height: 36px;
+      padding: 7px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: transform .18s, box-shadow .18s, border-color .18s, color .18s, background .18s;
+    }
+
+    .chip:hover {
+      transform: translateY(-1px);
+      border-color: #C9DCEE;
+      color: var(--blue-2);
+    }
+
+    .chip.active {
+      color: #fff;
+      background: var(--blue);
+      border-color: var(--blue);
+      box-shadow: 0 18px 34px -20px rgba(62, 134, 196, .85);
+    }
+
+    .output {
+      padding: 24px;
+    }
+
+    .client-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .client-top {
+      padding: 22px;
+      background: linear-gradient(155deg, #3E86C4, #27517d);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .client-top:after {
+      content: "LT";
+      position: absolute;
+      right: 12px;
+      top: -28px;
+      font-family: var(--head);
+      font-style: italic;
+      font-weight: 800;
+      font-size: 130px;
+      line-height: 1;
+      color: rgba(255, 255, 255, .12);
+    }
+
+    .client-top h2 {
+      position: relative;
+      font-family: var(--head);
+      font-style: italic;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.08;
+      max-width: 850px;
+      z-index: 1;
+    }
+
+    .client-top p {
+      position: relative;
+      color: #DCE8F4;
+      max-width: 760px;
+      margin-top: 10px;
+      z-index: 1;
+    }
+
+    .payment-list {
+      display: grid;
+      gap: 10px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .payment {
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 13px;
+    }
+
+    .payment i {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #EAF2FA;
+      color: var(--blue-2);
+      font-style: normal;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .payment b {
+      display: block;
+      font-size: 15px;
+    }
+
+    .payment span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .payment strong {
+      color: var(--blue-2);
+      font-size: 18px;
+      font-weight: 800;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .box {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .box h3 {
+      font-family: var(--head);
+      font-style: italic;
+      color: var(--blue);
+      font-size: 12px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .row:last-child {
+      border-bottom: 0;
+    }
+
+    .row strong {
+      color: var(--ink);
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .row.total strong {
+      color: var(--blue);
+      font-family: var(--head);
+      font-style: italic;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .seller-only[hidden] {
+      display: none;
+    }
+
+    .note {
+      background: #EAF2FA;
+      border: 1px solid #C9DCEE;
+      border-radius: 14px;
+      padding: 14px;
+      color: #33485B;
+      font-size: 14px;
+      margin-top: 18px;
+    }
+
+    .alert {
+      color: var(--danger);
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-inner,
+      .content,
+      .details {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-inner,
+      .hero-inner,
+      .content {
+        width: min(100% - 24px, 1280px);
+      }
+
+      .nav-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px 0;
+      }
+
+      .summary-grid,
+      .products,
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .payment {
+        grid-template-columns: 42px minmax(0, 1fr);
+      }
+
+      .payment strong {
+        grid-column: 2;
+      }
     }
   </style>
 </head>
 <body>
-
-<!-- ============ INGRESSO ============ -->
-<div id="gate" class="dots">
-  <div class="box">
-    <img src="assets/largetrader-logo.png" alt="Large Trader">
-    <h1>Calcolatore rate</h1>
-    <input type="password" id="pwd" placeholder="Password" autocomplete="off" autofocus>
-    <button class="btn" id="entra" style="width:100%">Entra</button>
-    <div class="err" id="gate-err"></div>
-  </div>
-</div>
-
-<!-- ============ APP ============ -->
-<div id="app" style="display:none">
-
-  <header class="nav">
-    <div class="nav-in">
-      <div class="nav-left">
-        <img src="assets/largetrader-logo.png" alt="Large Trader">
-        <span class="nav-sep"></span>
-        <span class="nav-title">Calcolatore rate</span>
+  <div class="app">
+    <nav class="nav">
+      <div class="nav-inner">
+        <div class="wordmark">LARGE<span>TRADER</span></div>
+        <label class="toggle">
+          <span>Vista cliente</span>
+          <input id="clientMode" type="checkbox" checked>
+          <b></b>
+        </label>
       </div>
-      <button class="link" id="apri-admin">Impostazioni</button>
-    </div>
-  </header>
+    </nav>
 
-  <main class="shell">
-    <div id="provvisorio" class="badge">⚠ Percentuali provvisorie — non usare in trattativa</div>
-
-    <div class="workspace">
-
-      <!-- ---- INPUT ---- -->
-      <section class="panel controls">
-        <span class="sec-tag">Trattativa</span>
-
-        <div class="field">
-          <label for="prezzo">Prezzo totale (€)</label>
-          <input type="number" id="prezzo" min="0" step="500" value="13000" inputmode="decimal">
-        </div>
-
-        <div class="row">
-          <div class="field">
-            <label for="versamento">Primo versamento (€)</label>
-            <input type="number" id="versamento" min="0" step="500" value="6000" inputmode="decimal">
+    <main>
+      <section class="hero">
+        <div class="hero-inner">
+          <div>
+            <div class="eyebrow"><span class="live"></span> Calcolatore venditori</div>
+            <h1>Costruisci il piano rate <span>in diretta</span>.</h1>
+            <p class="lead">Il venditore inserisce prodotto, acconto e rate. Il cliente vede subito un piano chiaro, sostenibile e già pronto da confermare.</p>
           </div>
-          <div class="field">
-            <label for="nvers">In quante volte</label>
-            <input type="number" id="nvers" min="1" max="12" step="1" value="1" inputmode="numeric">
+
+          <div class="browser" aria-label="Riepilogo piano">
+            <div class="browser-bar">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="url">largetrader.it/offerta-lifetime</span>
+            </div>
+            <div class="screen">
+              <div class="summary-grid">
+                <div class="big-metric">
+                  <span>Oggi</span>
+                  <strong id="heroToday">-</strong>
+                </div>
+                <div class="big-metric">
+                  <span>Rata</span>
+                  <strong id="heroInstallment">-</strong>
+                </div>
+                <div class="big-metric">
+                  <span>Totale</span>
+                  <strong id="heroTotal">-</strong>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div class="resto">
-          <span>Da rateizzare</span>
-          <strong id="resto">—</strong>
-        </div>
-
-        <div class="field">
-          <label for="nrate">In quante rate</label>
-          <input type="number" id="nrate" min="1" max="60" step="1" value="10" inputmode="numeric">
         </div>
       </section>
 
-      <!-- ---- OUTPUT ---- -->
-      <section class="panel">
-        <div class="deal dots">
-          <span class="pill">Rata mensile</span>
-          <div class="rata" id="rata">—</div>
-          <div class="rata-sub" id="rata-sub"></div>
-        </div>
-        <div class="body" id="out"></div>
+      <section class="content">
+        <aside class="panel controls">
+          <div class="section">
+            <div class="section-head">
+              <h2>Prodotto</h2>
+              <small>Prezzi lifetime promo</small>
+            </div>
+            <div class="products" id="productButtons"></div>
+          </div>
+
+          <div class="section">
+            <div class="section-head">
+              <h2>Prezzo</h2>
+              <small>Modificabile in call</small>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label for="listPrice">Listino <em>prima dello sconto</em></label>
+                <input id="listPrice" type="number" min="0" step="500" inputmode="decimal">
+              </div>
+              <div class="field">
+                <label for="discount">Sconto <em>%</em></label>
+                <input id="discount" type="number" min="0" max="100" step="1" inputmode="decimal">
+              </div>
+            </div>
+            <div class="field">
+              <label for="salePrice">Prezzo concordato <em>lifetime</em></label>
+              <input id="salePrice" type="number" min="0" step="100" inputmode="decimal">
+            </div>
+            <div class="chips">
+              <button class="chip" data-action="promo" type="button">Promo 50%</button>
+              <button class="chip" data-action="standard" type="button">Prezzo base</button>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-head">
+              <h2>Acconto</h2>
+              <small>Subito o frazionato</small>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label for="deposit">Acconto totale</label>
+                <input id="deposit" type="number" min="0" step="100" inputmode="decimal">
+              </div>
+              <div class="field">
+                <label for="depositCount">Diviso in</label>
+                <select id="depositCount">
+                  <option value="1">1 pagamento</option>
+                  <option value="2">2 pagamenti</option>
+                  <option value="3">3 pagamenti</option>
+                  <option value="4">4 pagamenti</option>
+                </select>
+              </div>
+            </div>
+            <div class="chips">
+              <button class="chip" data-deposit="500" type="button">500</button>
+              <button class="chip" data-deposit="1000" type="button">1.000</button>
+              <button class="chip" data-deposit="4500" type="button">4.500</button>
+              <button class="chip" data-deposit="6000" type="button">6.000</button>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-head">
+              <h2>Rate</h2>
+              <small>Maggiorazione sul residuo</small>
+            </div>
+            <div class="grid-3">
+              <div class="field">
+                <label for="months">Numero rate</label>
+                <input id="months" type="number" min="1" max="60" step="1" inputmode="numeric">
+              </div>
+              <div class="field">
+                <label for="feePercent">Extra <em>%</em></label>
+                <input id="feePercent" type="number" min="0" step=".5" inputmode="decimal">
+              </div>
+              <div class="field">
+                <label for="roundTo">Arrotonda <em>€</em></label>
+                <input id="roundTo" type="number" min="0" step="5" inputmode="numeric">
+              </div>
+            </div>
+            <div class="chips" id="feeChips">
+              <button class="chip" data-fee="0" type="button">0%</button>
+              <button class="chip" data-fee="5" type="button">5%</button>
+              <button class="chip active" data-fee="10" type="button">10%</button>
+              <button class="chip" data-fee="15" type="button">15%</button>
+            </div>
+          </div>
+        </aside>
+
+        <section class="output">
+          <div class="client-card">
+            <div class="client-top">
+              <h2 id="clientHeadline">-</h2>
+              <p id="clientSubline">-</p>
+            </div>
+            <div class="payment-list" id="paymentList"></div>
+          </div>
+
+          <div class="details">
+            <div class="box">
+              <h3>Riepilogo cliente</h3>
+              <div id="clientRows"></div>
+            </div>
+
+            <div class="box seller-only" id="sellerBox" hidden>
+              <h3>Numeri venditore</h3>
+              <div id="sellerRows"></div>
+            </div>
+          </div>
+
+          <p class="note" id="salesSentence">-</p>
+          <p class="alert" id="mathAlert" hidden></p>
+        </section>
       </section>
-
-    </div>
-  </main>
-</div>
-
-<!-- ============ IMPOSTAZIONI ============ -->
-<div id="admin" hidden>
-  <div class="panel">
-    <h2>Impostazioni</h2>
-
-    <div id="admin-gate">
-      <div class="field">
-        <label for="apwd">Password impostazioni</label>
-        <input type="password" id="apwd" autocomplete="off">
-      </div>
-      <div class="err" id="admin-err" style="color:var(--coral);font-size:13.5px;min-height:20px;margin-bottom:10px"></div>
-      <div class="actions" style="margin-top:0;border:none;padding-top:0">
-        <button class="btn" id="admin-entra">Sblocca</button>
-        <button class="btn btn-ghost" onclick="chiudiAdmin()">Chiudi</button>
-      </div>
-    </div>
-
-    <div id="admin-body" hidden>
-      <p class="nota" style="margin:0 0 18px">Il supplemento si applica <strong>solo alla parte rateizzata</strong>, mai al primo versamento.</p>
-      <table>
-        <thead><tr><th>Da rate</th><th>A rate</th><th>Supplemento %</th><th></th></tr></thead>
-        <tbody id="scaglioni"></tbody>
-      </table>
-      <button class="btn btn-ghost btn-sm" onclick="aggiungiScaglione()">+ Aggiungi scaglione</button>
-
-      <div class="field" style="margin-top:26px;max-width:230px">
-        <label for="step">Arrotonda le rate a (€)</label>
-        <input type="number" id="step" min="0" step="1" value="10">
-      </div>
-      <p class="nota" style="margin-top:8px">0 = importo esatto al centesimo. La differenza va sempre sull'ultima rata.</p>
-
-      <div class="actions">
-        <button class="btn" onclick="salvaAdmin()">Salva</button>
-        <button class="btn btn-ghost" onclick="chiudiAdmin()">Chiudi</button>
-        <span class="spacer"></span>
-        <button class="link" onclick="ripristina()">Ripristina default</button>
-      </div>
-      <p class="nota">Le modifiche restano su questo browser. Per aggiornarle a tutti i venditori vanno messe nel file e ripubblicate.</p>
-    </div>
+    </main>
   </div>
-</div>
 
-<script>
-"use strict";
+  <script>
+    "use strict";
 
-/* ============================================================
-   1. CONFIGURAZIONE
-   ============================================================ */
+    const PRODUCTS = [
+      { id: "maxx", name: "Codice Maxx", list: 16000, price: 8000 },
+      { id: "azioni", name: "Codice Azioni", list: 16000, price: 8000 },
+      { id: "opzioni", name: "Codice Opzioni", list: 16000, price: 8000 },
+      { id: "selector", name: "Codice Selector", list: 18000, price: 9000 }
+    ];
 
-/* Password — memorizzate come hash, non in chiaro.
-   Per cambiarle: console del browser → nuovaPassword('la-tua-password') → incolla il numero qui.
-   Attuali:  accesso = maxx2026     impostazioni = rate-admin-2026            */
-const HASH_ACCESSO = 1594800301;
-const HASH_ADMIN   = 2983435518;
+    const form = {
+      products: ["maxx"]
+    };
 
-/* Metti true quando Christopher e Vjola hanno confermato le percentuali:
-   sparisce la fascia rossa.                                                  */
-const PERCENTUALI_CONFERMATE = false;
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => Array.from(document.querySelectorAll(selector));
+    const field = id => document.getElementById(id);
 
-/* Scaglioni di default. da/a = numero di rate (estremi inclusi).
-   ⚠ PROVVISORI: ipotesi +5/+10/+15% emersa nel meeting boss del 27/07.       */
-const DEFAULT = {
-  scaglioni: [
-    { da: 1,  a: 1,  perc: 0  },
-    { da: 2,  a: 6,  perc: 5  },
-    { da: 7,  a: 12, perc: 10 },
-    { da: 13, a: 24, perc: 15 }
-  ],
-  step: 10
-};
+    function numberValue(id) {
+      const clean = String(field(id).value).replace(",", ".");
+      const parsed = Number(clean);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
 
-let cfg = caricaCfg();
+    function money(value) {
+      const rounded = Math.round((value + Number.EPSILON) * 100) / 100;
+      return new Intl.NumberFormat("it-IT", {
+        style: "currency",
+        currency: "EUR",
+        minimumFractionDigits: Number.isInteger(rounded) ? 0 : 2,
+        maximumFractionDigits: 2
+      }).format(rounded);
+    }
 
-/* I dati interni non si vedono: lo schermo si condivide col cliente in Meet.
-   Si aprono e si chiudono premendo "i" (fuori dai campi).                    */
-let internoAperto = false;
+    function round(value) {
+      return Math.round((value + Number.EPSILON) * 100) / 100;
+    }
 
-/* ============================================================
-   2. UTILITÀ
-   ============================================================ */
+    function limit(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
 
-function hash(s){ let x = 5381; for (let i = 0; i < s.length; i++) x = ((x << 5) + x + s.charCodeAt(i)) >>> 0; return x; }
-window.nuovaPassword = s => hash(s);
+    function selectedProducts() {
+      const selected = PRODUCTS.filter(item => form.products.includes(item.id));
+      return selected.length ? selected : [PRODUCTS[0]];
+    }
 
-const c2 = n => Math.round(n * 100) / 100;
+    function selectedTotals() {
+      return selectedProducts().reduce((totals, product) => ({
+        list: totals.list + product.list,
+        price: totals.price + product.price
+      }), { list: 0, price: 0 });
+    }
 
-function eur(n){
-  n = c2(n);
-  return new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR', useGrouping:'always',
-    minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 }).format(n);
-}
+    function selectedLabel() {
+      const names = selectedProducts().map(product => product.name);
+      if (names.length === 1) return names[0];
+      return `Pacchetto ${names.join(" + ")}`;
+    }
 
-function arrotonda(v, step){
-  if (!step || step <= 0) return c2(v);
-  return Math.round(v / step) * step;
-}
+    function splitPayment(total, count, step) {
+      const parts = Math.max(1, Math.floor(count));
+      const amount = Math.max(0, round(total));
+      const rounding = Math.max(0, Number(step) || 0);
 
-function percentuale(nRate){
-  const s = cfg.scaglioni.find(s => nRate >= s.da && nRate <= s.a);
-  return s ? s.perc : null;
-}
+      if (amount === 0) return [];
+      if (parts === 1) return [amount];
 
-function caricaCfg(){
-  try {
-    const s = JSON.parse(localStorage.getItem('calcolatore-rate-cfg'));
-    if (s && Array.isArray(s.scaglioni) && s.scaglioni.length) return s;
-  } catch(e){}
-  return JSON.parse(JSON.stringify(DEFAULT));
-}
+      const raw = amount / parts;
+      let base = rounding ? Math.round(raw / rounding) * rounding : round(raw);
+      if (base <= 0) base = rounding || 1;
 
-const val = id => { const v = parseFloat(document.getElementById(id).value); return isNaN(v) ? 0 : v; };
+      let payments = Array(parts - 1).fill(round(base));
+      let last = round(amount - payments.reduce((sum, item) => sum + item, 0));
 
-/* Divide un importo in n quote arrotondate; l'ultima assorbe la differenza. */
-function dividi(importo, n, step){
-  if (n < 1) return { err: 'Servono almeno 1 rata.' };
-  if (n === 1) return { quota: c2(importo), quote: [c2(importo)] };
+      if (last <= 0) {
+        base = rounding ? Math.floor(raw / rounding) * rounding : round(raw);
+        if (base <= 0) base = rounding || 1;
+        payments = Array(parts - 1).fill(round(base));
+        last = round(amount - payments.reduce((sum, item) => sum + item, 0));
+      }
 
-  let quota  = arrotonda(importo / n, step);
-  let ultima = c2(importo - quota * (n - 1));
+      payments.push(last);
+      return payments;
+    }
 
-  if (ultima <= 0){                                   // arrotondamento troppo alto → per difetto
-    quota  = step > 0 ? Math.floor(importo / n / step) * step : c2(importo / n);
-    ultima = c2(importo - quota * (n - 1));
-  }
-  if (quota <= 0 || ultima <= 0)
-    return { err: 'Con ' + n + ' rate l\'importo è troppo basso: riduci il numero di rate.' };
+    function calculate() {
+      const list = Math.max(0, numberValue("listPrice"));
+      const sale = Math.max(0, numberValue("salePrice"));
+      const deposit = limit(numberValue("deposit"), 0, sale);
+      const depositCount = limit(Math.floor(numberValue("depositCount")), 1, 4);
+      const months = limit(Math.floor(numberValue("months")), 1, 60);
+      const feePercent = Math.max(0, numberValue("feePercent"));
+      const roundTo = Math.max(0, numberValue("roundTo"));
 
-  const quote = [];
-  for (let i = 0; i < n - 1; i++) quote.push(quota);
-  quote.push(ultima);
-  return { quota, quote };
-}
+      const residual = round(sale - deposit);
+      const fee = round(residual * feePercent / 100);
+      const financedTotal = round(residual + fee);
+      const depositPayments = splitPayment(deposit, depositCount, roundTo);
+      const monthlyPayments = splitPayment(financedTotal, months, roundTo);
 
-/* ============================================================
-   3. IL CALCOLO
-   Il supplemento si applica SOLO alla parte rateizzata.
-   ============================================================ */
+      const payments = [
+        ...depositPayments.map((amount, index) => ({
+          title: index === 0 ? "Oggi" : "Acconto",
+          text: depositPayments.length === 1 ? "Conferma del percorso" : `Pagamento ${index + 1} di ${depositPayments.length}`,
+          amount
+        })),
+        ...monthlyPayments.map((amount, index) => ({
+          title: "Rata",
+          text: `Rata ${index + 1} di ${monthlyPayments.length}`,
+          amount
+        }))
+      ];
 
-function calcola(){
-  const prezzo     = val('prezzo');
-  const versamento = val('versamento');
-  const nVers      = Math.max(1, Math.floor(val('nvers')));
-  const nRate      = Math.floor(val('nrate'));
-  const step       = cfg.step;
+      const total = round(payments.reduce((sum, item) => sum + item.amount, 0));
+      const expected = round(deposit + financedTotal);
+      const saving = Math.max(0, round(list - sale));
 
-  const err = [];
-  if (prezzo <= 0)    err.push('Inserisci il prezzo totale.');
-  if (versamento < 0) err.push('Il primo versamento non può essere negativo.');
-  if (nRate < 1)      err.push('Il numero di rate deve essere almeno 1.');
-  if (versamento >= prezzo && prezzo > 0)
-    err.push('Il primo versamento copre già tutto il prezzo: non resta niente da rateizzare.');
+      return {
+        list,
+        sale,
+        deposit,
+        depositCount,
+        months,
+        feePercent,
+        roundTo,
+        residual,
+        fee,
+        financedTotal,
+        payments,
+        monthly: monthlyPayments[0] || 0,
+        lastMonthly: monthlyPayments[monthlyPayments.length - 1] || 0,
+        total,
+        expected,
+        saving
+      };
+    }
 
-  const perc = percentuale(nRate);
-  if (perc === null && nRate >= 1)
-    err.push('Non c\'è nessuno scaglione per ' + nRate + ' rate: aggiungilo in Impostazioni.');
+    function renderProducts() {
+      $("#productButtons").innerHTML = PRODUCTS.map(product => `
+        <button class="product ${form.products.includes(product.id) ? "active" : ""}" type="button" data-product="${product.id}">
+          <b>${product.name}</b>
+          <span>${money(product.price)} lifetime promo</span>
+        </button>
+      `).join("");
+    }
 
-  if (err.length) return { err, daRateizzare: prezzo > 0 ? c2(prezzo - versamento) : null };
+    function renderPayments(plan) {
+      const clientMode = field("clientMode").checked;
+      const visibleCount = clientMode ? 8 : plan.payments.length;
+      const visible = plan.payments.slice(0, visibleCount);
 
-  const daRateizzare  = c2(prezzo - versamento);
-  const supplemento   = c2(daRateizzare * perc / 100);
-  const rateizzato    = c2(daRateizzare + supplemento);
-  const totaleCliente = c2(versamento + rateizzato);
+      let html = visible.map((payment, index) => `
+        <div class="payment">
+          <i>${index + 1}</i>
+          <div>
+            <b>${payment.title}</b>
+            <span>${payment.text}</span>
+          </div>
+          <strong>${money(payment.amount)}</strong>
+        </div>
+      `).join("");
 
-  const v = dividi(versamento, nVers, step);
-  if (v.err && versamento > 0) return { err: [v.err], daRateizzare };
-  const r = dividi(rateizzato, nRate, step);
-  if (r.err) return { err: [r.err], daRateizzare };
+      if (visible.length < plan.payments.length) {
+        html += `
+          <div class="payment">
+            <i>+</i>
+            <div>
+              <b>${plan.payments.length - visible.length} pagamenti successivi</b>
+              <span>Proseguono con lo stesso schema mensile</span>
+            </div>
+            <strong>${money(plan.monthly)}</strong>
+          </div>
+        `;
+      }
 
-  /* Calendario dei pagamenti: il primo è subito, poi uno al mese. */
-  const calendario = (versamento > 0 ? v.quote : []).concat(r.quote);
-  const somma = c2(calendario.reduce((a, b) => a + b, 0));
+      $("#paymentList").innerHTML = html;
+    }
 
-  return { prezzo, versamento, nVers, quotaVers: v.quota, nRate, perc,
-           daRateizzare, supplemento, rateizzato, totaleCliente,
-           rata: r.quota, quote: r.quote, calendario, somma,
-           quadra: Math.abs(somma - totaleCliente) < 0.011 };
-}
+    function row(label, value, extraClass = "") {
+      return `<div class="row ${extraClass}"><span>${label}</span><strong>${value}</strong></div>`;
+    }
 
-/* ============================================================
-   4. IL RISULTATO A SCHERMO
-   ============================================================ */
+    function sumThrough(plan, month) {
+      return round(plan.payments.slice(0, month + 1).reduce((sum, item) => sum + item.amount, 0));
+    }
 
-function riga(l, r, cls){
-  return '<div class="line ' + (cls || '') + '"><span class="l">' + l + '</span><span class="r">' + r + '</span></div>';
-}
+    function renderRows(plan) {
+      const products = selectedProducts().map(product => product.name).join(" + ");
+      const monthlyLabel = plan.months > 1 && Math.abs(plan.monthly - plan.lastMonthly) > .01
+        ? `${plan.months - 1} rate da ${money(plan.monthly)} + ultima ${money(plan.lastMonthly)}`
+        : `${plan.months} rate da ${money(plan.monthly)}`;
 
-function render(){
-  const d = calcola();
+      $("#clientRows").innerHTML = [
+        row("Prodotti", products),
+        row("Listino", money(plan.list)),
+        row("Sconto", plan.saving ? money(plan.saving) : "Nessuno"),
+        row("Prezzo lifetime", money(plan.sale)),
+        row("Acconto", plan.depositCount > 1 ? `${plan.depositCount} pagamenti, totale ${money(plan.deposit)}` : money(plan.deposit)),
+        row("Rateizzazione", monthlyLabel),
+        row("Totale cliente", money(plan.total), "total")
+      ].join("");
 
-  document.getElementById('resto').textContent =
-    d.daRateizzare !== null && d.daRateizzare > 0 ? eur(d.daRateizzare) : '—';
+      $("#sellerRows").innerHTML = [
+        row("Residuo", money(plan.residual)),
+        row("Extra rateizzazione", `${plan.feePercent}% · ${money(plan.fee)}`),
+        row("Incasso entro 3 mesi", money(sumThrough(plan, 3))),
+        row("Incasso entro 4 mesi", money(sumThrough(plan, 4))),
+        row("Incasso entro 6 mesi", money(sumThrough(plan, 6))),
+        row("Incasso entro 8 mesi", money(sumThrough(plan, 8))),
+        row("Incasso entro 12 mesi", money(sumThrough(plan, 12)))
+      ].join("");
+    }
 
-  const box = document.getElementById('out');
+    function render() {
+      const productName = selectedLabel();
+      const plan = calculate();
+      const today = plan.payments[0] ? plan.payments[0].amount : 0;
+      const hasRate = plan.residual > 0;
 
-  if (d.err){
-    document.getElementById('rata').textContent = '—';
-    document.getElementById('rata-sub').textContent = '';
-    box.innerHTML = '<div class="errbox"><ul><li>' + d.err.join('</li><li>') + '</li></ul></div>';
-    return;
-  }
+      renderProducts();
+      renderPayments(plan);
+      renderRows(plan);
 
-  const ultima = d.quote[d.quote.length - 1];
-  const uguali = d.quote.length - (Math.abs(ultima - d.rata) > 0.001 ? 1 : 0);
+      $("#heroToday").textContent = money(today);
+      $("#heroInstallment").textContent = hasRate ? money(plan.monthly) : "Saldato";
+      $("#heroTotal").textContent = money(plan.total);
 
-  document.getElementById('rata').textContent = eur(d.rata);
-  document.getElementById('rata-sub').textContent =
-    d.nRate === 1 ? 'in un\'unica soluzione' : d.nRate + ' rate';
+      $("#clientHeadline").innerHTML = hasRate
+        ? `${productName} lifetime con ingresso da <span class="amount-gradient">${money(today)}</span>.`
+        : `${productName} lifetime saldato oggi.`;
 
-  let h = '';
-  h += riga('Prezzo totale', eur(d.prezzo));
-  h += riga('Primo versamento', d.nVers > 1 ? d.nVers + ' × ' + eur(d.quotaVers) + ' = ' + eur(d.versamento)
-                                            : eur(d.versamento));
-  h += riga('Da rateizzare', eur(d.daRateizzare));
-  h += riga('Supplemento rateizzazione', '+' + d.perc + '%' +
-            (d.supplemento > 0 ? ' &nbsp;<small>(' + eur(d.supplemento) + ')</small>' : ''));
+      $("#clientSubline").textContent = hasRate
+        ? `Poi ${plan.months} rate mensili da ${money(plan.monthly)}. Totale piano: ${money(plan.total)}.`
+        : `Totale piano: ${money(plan.total)}.`;
 
-  if (d.nRate > 1){
-    h += riga(uguali + (uguali === 1 ? ' rata da' : ' rate da'), eur(d.rata));
-    if (Math.abs(ultima - d.rata) > 0.001) h += riga('Ultima rata', eur(ultima));
-  }
+      $("#salesSentence").textContent = hasRate
+        ? `Con questa soluzione entri nel ${productName} lifetime oggi, tieni una rata sostenibile e non hai la pressione della scadenza annuale.`
+        : `Con questa soluzione chiudi il ${productName} lifetime in un'unica soluzione e hai accesso definitivo al percorso.`;
 
-  h += riga('Totale', eur(d.totaleCliente), 'tot');
+      $("#sellerBox").hidden = field("clientMode").checked;
+      $("#mathAlert").hidden = Math.abs(plan.total - plan.expected) <= .01;
+      $("#mathAlert").textContent = `Controllo contabile: il totale atteso è ${money(plan.expected)}, il piano somma ${money(plan.total)}.`;
+    }
 
-  h += '<div class="check' + (d.quadra ? '' : ' bad') + '">' +
-         (d.quadra ? '<span>✓</span><span>La somma dei pagamenti fa ' + eur(d.somma) + ', esatto.</span>'
-                   : '<span>⚠</span><span>I conti non tornano: ' + eur(d.somma) + ' invece di ' +
-                     eur(d.totaleCliente) + '. Non usare questo piano.</span>') +
-       '</div>';
+    function applySelectedProducts() {
+      const totals = selectedTotals();
+      field("listPrice").value = totals.list;
+      field("discount").value = 50;
+      field("salePrice").value = totals.price;
+      render();
+    }
 
-  /* Zona riservata: nessun pulsante a schermo (lo schermo si condivide col cliente). */
-  h += '<div class="interno"' + (internoAperto ? '' : ' hidden') + '>' +
-         '<span class="tag">Incassato</span>';
-  [3, 4, 6, 12].forEach(m => { h += riga('Entro ' + m + ' mesi', eur(incassato(d, m))); });
-  h += '</div>';
+    function toggleProduct(id) {
+      if (form.products.includes(id)) {
+        if (form.products.length === 1) return;
+        form.products = form.products.filter(productId => productId !== id);
+      } else {
+        form.products = [...form.products, id];
+      }
+      applySelectedProducts();
+    }
 
-  box.innerHTML = h;
-}
+    function syncSaleFromDiscount() {
+      const list = numberValue("listPrice");
+      const discount = limit(numberValue("discount"), 0, 100);
+      field("discount").value = discount;
+      field("salePrice").value = Math.round(list * (1 - discount / 100));
+      render();
+    }
 
-/* Primo pagamento subito (mese 0), poi uno al mese. */
-function incassato(d, mesi){
-  return c2(d.calendario.slice(0, mesi + 1).reduce((a, b) => a + b, 0));
-}
+    function syncDiscountFromSale() {
+      const list = numberValue("listPrice");
+      const sale = numberValue("salePrice");
+      if (list > 0) field("discount").value = limit(round((1 - sale / list) * 100), 0, 100);
+      render();
+    }
 
-/* ============================================================
-   5. PANNELLO IMPOSTAZIONI
-   ============================================================ */
+    function bind() {
+      $("#productButtons").addEventListener("click", event => {
+        const button = event.target.closest("[data-product]");
+        if (button) toggleProduct(button.dataset.product);
+      });
 
-function disegnaScaglioni(){
-  document.getElementById('scaglioni').innerHTML = cfg.scaglioni.map((s, i) =>
-    '<tr>' +
-      '<td><input type="number" min="1" step="1" value="' + s.da   + '" data-i="' + i + '" data-k="da"></td>' +
-      '<td><input type="number" min="1" step="1" value="' + s.a    + '" data-i="' + i + '" data-k="a"></td>' +
-      '<td><input type="number" min="0" step="0.5" value="' + s.perc + '" data-i="' + i + '" data-k="perc"></td>' +
-      '<td><button class="del" onclick="togliScaglione(' + i + ')" title="Elimina">✕</button></td>' +
-    '</tr>').join('');
-  document.getElementById('step').value = cfg.step;
-}
+      $$("[data-action]").forEach(button => {
+        button.addEventListener("click", () => {
+          if (button.dataset.action === "promo") {
+            field("discount").value = 50;
+            syncSaleFromDiscount();
+          }
+          if (button.dataset.action === "standard") {
+            field("salePrice").value = selectedTotals().price;
+            syncDiscountFromSale();
+          }
+        });
+      });
 
-function leggiScaglioni(){
-  document.querySelectorAll('#scaglioni input').forEach(inp => {
-    const v = parseFloat(inp.value);
-    cfg.scaglioni[inp.dataset.i][inp.dataset.k] = isNaN(v) ? 0 : v;
-  });
-  const st = parseFloat(document.getElementById('step').value);
-  cfg.step = isNaN(st) || st < 0 ? 0 : st;
-}
+      $$("[data-deposit]").forEach(button => {
+        button.addEventListener("click", () => {
+          field("deposit").value = Math.min(Number(button.dataset.deposit), numberValue("salePrice"));
+          render();
+        });
+      });
 
-function aggiungiScaglione(){
-  leggiScaglioni();
-  const ultimo = cfg.scaglioni[cfg.scaglioni.length - 1];
-  const da = ultimo ? ultimo.a + 1 : 1;
-  cfg.scaglioni.push({ da, a: da + 5, perc: ultimo ? ultimo.perc : 0 });
-  disegnaScaglioni();
-}
+      $$("[data-fee]").forEach(button => {
+        button.addEventListener("click", () => {
+          field("feePercent").value = button.dataset.fee;
+          $$("[data-fee]").forEach(item => item.classList.toggle("active", item === button));
+          render();
+        });
+      });
 
-function togliScaglione(i){
-  leggiScaglioni();
-  cfg.scaglioni.splice(i, 1);
-  if (!cfg.scaglioni.length) cfg.scaglioni.push({ da: 1, a: 12, perc: 0 });
-  disegnaScaglioni();
-}
+      ["deposit", "depositCount", "months", "feePercent", "roundTo", "clientMode"].forEach(id => {
+        field(id).addEventListener("input", render);
+        field(id).addEventListener("change", render);
+      });
 
-function salvaAdmin(){
-  leggiScaglioni();
-  cfg.scaglioni.sort((a, b) => a.da - b.da);
-  localStorage.setItem('calcolatore-rate-cfg', JSON.stringify(cfg));
-  disegnaScaglioni();
-  render();
-  chiudiAdmin();
-}
+      field("discount").addEventListener("input", syncSaleFromDiscount);
+      field("salePrice").addEventListener("input", syncDiscountFromSale);
+      field("listPrice").addEventListener("input", syncSaleFromDiscount);
+    }
 
-function ripristina(){
-  cfg = JSON.parse(JSON.stringify(DEFAULT));
-  localStorage.removeItem('calcolatore-rate-cfg');
-  disegnaScaglioni();
-  render();
-}
+    function start() {
+      const totals = selectedTotals();
+      field("listPrice").value = totals.list;
+      field("discount").value = 50;
+      field("salePrice").value = totals.price;
+      field("deposit").value = 1000;
+      field("depositCount").value = 1;
+      field("months").value = 12;
+      field("feePercent").value = 10;
+      field("roundTo").value = 10;
+      bind();
+      render();
+    }
 
-function chiudiAdmin(){
-  document.getElementById('admin').hidden = true;
-  document.getElementById('admin-body').hidden = true;
-  document.getElementById('admin-gate').hidden = false;
-  document.getElementById('apwd').value = '';
-  document.getElementById('admin-err').textContent = '';
-}
-
-/* ============================================================
-   6. AVVIO
-   ============================================================ */
-
-function entra(){
-  if (hash(document.getElementById('pwd').value.trim()) === HASH_ACCESSO){
-    document.getElementById('gate').style.display = 'none';
-    document.getElementById('app').style.display = '';
-    render();
-  } else {
-    document.getElementById('gate-err').textContent = 'Password sbagliata.';
-    document.getElementById('pwd').select();
-  }
-}
-
-function sbloccaAdmin(){
-  if (hash(document.getElementById('apwd').value.trim()) === HASH_ADMIN){
-    document.getElementById('admin-gate').hidden = true;
-    document.getElementById('admin-body').hidden = false;
-    disegnaScaglioni();
-  } else {
-    document.getElementById('admin-err').textContent = 'Password sbagliata.';
-    document.getElementById('apwd').select();
-  }
-}
-
-document.getElementById('entra').addEventListener('click', entra);
-document.getElementById('pwd').addEventListener('keydown', e => { if (e.key === 'Enter') entra(); });
-
-document.getElementById('apri-admin').addEventListener('click', () => {
-  document.getElementById('admin').hidden = false;
-  document.getElementById('apwd').focus();
-});
-document.getElementById('admin-entra').addEventListener('click', sbloccaAdmin);
-document.getElementById('apwd').addEventListener('keydown', e => { if (e.key === 'Enter') sbloccaAdmin(); });
-
-['prezzo','versamento','nvers','nrate'].forEach(id =>
-  document.getElementById(id).addEventListener('input', render));
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && !document.getElementById('admin').hidden) return chiudiAdmin();
-
-  /* "i" = mostra/nascondi i dati interni. Ignorato mentre si scrive in un campo. */
-  const dentroUnCampo = ['INPUT','TEXTAREA'].includes(document.activeElement.tagName);
-  if ((e.key === 'i' || e.key === 'I') && !dentroUnCampo && !e.metaKey && !e.ctrlKey && !e.altKey){
-    internoAperto = !internoAperto;
-    const b = document.querySelector('.interno');
-    if (b) b.hidden = !internoAperto;
-  }
-});
-
-if (PERCENTUALI_CONFERMATE) document.getElementById('provvisorio').remove();
-</script>
+    start();
+  </script>
 </body>
 </html>
