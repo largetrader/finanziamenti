@@ -344,27 +344,34 @@
       gap: 9px;
     }
 
-    .product {
+    .product-card {
       border: 1px solid var(--line);
       border-radius: 14px;
       background: #fff;
-      min-height: 78px;
-      padding: 13px;
-      text-align: left;
-      color: var(--ink);
       transition: transform .18s, box-shadow .18s, border-color .18s, background .18s;
+      overflow: hidden;
     }
 
-    .product:hover {
+    .product-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 18px 34px -24px rgba(45, 98, 153, .55);
       border-color: #C9DCEE;
     }
 
-    .product.active {
+    .product-card.active {
       background: #EAF2FA;
       border-color: var(--blue);
       box-shadow: inset 0 0 0 1px rgba(62, 134, 196, .28);
+    }
+
+    .product {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      min-height: 78px;
+      padding: 13px;
+      text-align: left;
+      color: var(--ink);
     }
 
     .product b {
@@ -376,6 +383,52 @@
     .product span {
       color: var(--muted);
       font-size: 12px;
+    }
+
+    .trade-info {
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, .72);
+    }
+
+    .trade-info summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 9px 13px;
+      color: var(--blue-2);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .3px;
+    }
+
+    .trade-info summary::-webkit-details-marker { display: none; }
+    .trade-info summary::after { content: "⌄"; float: right; }
+    .trade-info[open] summary::after { content: "⌃"; }
+
+    .trade-info-body {
+      padding: 1px 13px 12px;
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.45;
+    }
+
+    .trade-info-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 9px;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .trade-info-row strong {
+      color: var(--ink);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .trade-note {
+      margin-top: 9px;
+      color: #7A5A17;
+      font-weight: 600;
     }
 
     .grid-2,
@@ -705,7 +758,7 @@
               <span class="dot"></span>
               <span class="dot"></span>
               <span class="dot"></span>
-              <span class="url">largetrader.it/offerta-lifetime</span>
+              <span class="url">largetrader.it/offerta</span>
             </div>
             <div class="screen">
               <div class="summary-grid">
@@ -732,7 +785,7 @@
           <div class="section">
             <div class="section-head">
               <h2>Prodotto</h2>
-              <small>Prezzi lifetime promo</small>
+              <small>Listini correnti</small>
             </div>
             <div class="products" id="productButtons"></div>
           </div>
@@ -753,7 +806,7 @@
               </div>
             </div>
             <div class="field">
-              <label for="salePrice">Prezzo concordato <em>lifetime</em></label>
+              <label for="salePrice">Prezzo concordato</label>
               <input id="salePrice" type="number" min="0" step="100" inputmode="decimal">
             </div>
             <div class="chips">
@@ -850,14 +903,24 @@
     "use strict";
 
     const PRODUCTS = [
-      { id: "maxx", name: "Codice Maxx", list: 16000, price: 8000 },
-      { id: "azioni", name: "Codice Azioni", list: 16000, price: 8000 },
-      { id: "opzioni", name: "Codice Opzioni", list: 16000, price: 8000 },
-      { id: "selector", name: "Codice Selector", list: 18000, price: 9000 }
+      { id: "algo-annuale", name: "Algo 90% annuale", list: 6000, margin: "5.000 €" },
+      { id: "algo-lifetime", name: "Algo 90% lifetime", list: 16000, margin: "10.000–9.000 €" },
+      { id: "composer-annuale", name: "LargeTrader Composer annuale", list: 6000, margin: "5.000 €" },
+      { id: "composer-lifetime", name: "LargeTrader Composer lifetime", list: 11000, margin: "9.000 €" },
+      { id: "maxx-annuale", name: "Codice Maxx annuale one click", list: 6000, margin: "5.000 €", skilling: "−500 € sul prezzo concordato" },
+      { id: "maxx-lifetime", name: "Codice Maxx lifetime one click", list: 16000, margin: "10.000–8.500 €", skilling: "−500 € sul prezzo concordato" },
+      { id: "azioni-annuale", name: "Codice Azioni annuale", list: 6000, margin: "5.000 €" },
+      { id: "azioni-lifetime", name: "Codice Azioni lifetime", list: 16000, margin: "10.000–8.500 €" },
+      { id: "opzioni-annuale", name: "Codice Opzioni annuale", list: 6000, margin: "5.000 €" },
+      { id: "opzioni-lifetime", name: "Codice Opzioni lifetime", list: 16000, margin: "10.000–8.500 €" },
+      { id: "selector-annuale", name: "Codice Selector Legend annuale", list: 6000, margin: "5.000 €", skilling: "−500 € sul prezzo concordato" },
+      { id: "selector-lifetime", name: "Codice Selector Legend lifetime", list: 18000, margin: "12.000–9.500 €", skilling: "−500 € sul prezzo concordato" },
+      { id: "scalping-open-flow", name: "Scalping Open Flow", list: 5000, margin: "3.500 €", skilling: "−500 € sul prezzo concordato" },
+      { id: "nove-settimane", name: "9 Settimane e Mezzo", list: 6000, margin: "5.000 €" }
     ];
 
     const form = {
-      products: ["maxx"]
+      products: ["scalping-open-flow"]
     };
 
     const $ = selector => document.querySelector(selector);
@@ -895,9 +958,8 @@
 
     function selectedTotals() {
       return selectedProducts().reduce((totals, product) => ({
-        list: totals.list + product.list,
-        price: totals.price + product.price
-      }), { list: 0, price: 0 });
+        list: totals.list + product.list
+      }), { list: 0 });
     }
 
     function selectedLabel() {
@@ -986,10 +1048,21 @@
 
     function renderProducts() {
       $("#productButtons").innerHTML = PRODUCTS.map(product => `
-        <button class="product ${form.products.includes(product.id) ? "active" : ""}" type="button" data-product="${product.id}">
-          <b>${product.name}</b>
-          <span>${money(product.price)} lifetime promo</span>
-        </button>
+        <div class="product-card ${form.products.includes(product.id) ? "active" : ""}">
+          <button class="product" type="button" data-product="${product.id}">
+            <b>${product.name}</b>
+            <span>${money(product.list)} di listino</span>
+          </button>
+          <details class="trade-info">
+            <summary>Riferimenti trattativa</summary>
+            <div class="trade-info-body">
+              <div class="trade-info-row"><span>Prezzo di listino</span><strong>${money(product.list)}</strong></div>
+              <div class="trade-info-row"><span>Margine in chiamata</span><strong>${product.margin}</strong></div>
+              ${product.skilling ? `<div class="trade-info-row"><span>Borsa di studio Skilling</span><strong>${product.skilling}</strong></div>` : ""}
+              <p class="trade-note">Non proporre automaticamente il prezzo minimo.</p>
+            </div>
+          </details>
+        </div>
       `).join("");
     }
 
@@ -1043,7 +1116,7 @@
         row("Prodotti", products),
         row("Listino", money(plan.list)),
         row("Sconto", plan.saving ? money(plan.saving) : "Nessuno"),
-        row("Prezzo lifetime", money(plan.sale)),
+        row("Prezzo concordato", money(plan.sale)),
         row("Acconto", plan.depositCount > 1 ? `${plan.depositCount} pagamenti, totale ${money(plan.deposit)}` : money(plan.deposit)),
         row("Rateizzazione", monthlyLabel),
         row("Totale cliente", money(plan.total), "total")
@@ -1075,16 +1148,16 @@
       $("#heroTotal").textContent = money(plan.total);
 
       $("#clientHeadline").innerHTML = hasRate
-        ? `${productName} lifetime con ingresso da <span class="amount-gradient">${money(today)}</span>.`
-        : `${productName} lifetime saldato oggi.`;
+        ? `${productName} con ingresso da <span class="amount-gradient">${money(today)}</span>.`
+        : `${productName} saldato oggi.`;
 
       $("#clientSubline").textContent = hasRate
         ? `Poi ${plan.months} rate mensili da ${money(plan.monthly)}. Totale piano: ${money(plan.total)}.`
         : `Totale piano: ${money(plan.total)}.`;
 
       $("#salesSentence").textContent = hasRate
-        ? `Con questa soluzione entri nel ${productName} lifetime oggi, tieni una rata sostenibile e non hai la pressione della scadenza annuale.`
-        : `Con questa soluzione chiudi il ${productName} lifetime in un'unica soluzione e hai accesso definitivo al percorso.`;
+        ? `Con questa soluzione inizi oggi con ${productName} e distribuisci il saldo nel piano concordato.`
+        : `Con questa soluzione saldi ${productName} in un'unica soluzione.`;
 
       $("#sellerBox").hidden = field("clientMode").checked;
       $("#mathAlert").hidden = Math.abs(plan.total - plan.expected) <= .01;
@@ -1094,8 +1167,8 @@
     function applySelectedProducts() {
       const totals = selectedTotals();
       field("listPrice").value = totals.list;
-      field("discount").value = 50;
-      field("salePrice").value = totals.price;
+      field("discount").value = 0;
+      field("salePrice").value = totals.list;
       render();
     }
 
@@ -1137,7 +1210,7 @@
             syncSaleFromDiscount();
           }
           if (button.dataset.action === "standard") {
-            field("salePrice").value = selectedTotals().price;
+            field("salePrice").value = selectedTotals().list;
             syncDiscountFromSale();
           }
         });
@@ -1171,8 +1244,8 @@
     function start() {
       const totals = selectedTotals();
       field("listPrice").value = totals.list;
-      field("discount").value = 50;
-      field("salePrice").value = totals.price;
+      field("discount").value = 0;
+      field("salePrice").value = totals.list;
       field("deposit").value = 1000;
       field("depositCount").value = 1;
       field("months").value = 12;
